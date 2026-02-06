@@ -16,6 +16,8 @@
         <quarkus.platform.version>3.31.2</quarkus.platform.version>
         <skipITs>true</skipITs>
         <surefire-plugin.version>3.5.4</surefire-plugin.version>
+
+        <distributionManagement.releaseRepoUrl>http://localhost:8081/nexus/content/repositories/snapshots</distributionManagement.releaseRepoUrl>
     </properties>
 
     <dependencyManagement>
@@ -114,4 +116,21 @@
             </properties>
         </profile>
     </profiles>
+
+    <distributionManagement>
+        <repository>
+            <id>release-repo</id>
+            <url>${distributionManagement.releaseRepoUrl}</url>
+        </repository>
+    </distributionManagement>
+
+    <developers>
+        <developer>
+            <email>gitmail@b4sh.de</email>
+            <name>deB4SH</name>
+            <url>https://b4sh.de</url>
+            <id>deB4SH</id>
+        </developer>
+    </developers>
+
 </project>
