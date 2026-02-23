@@ -21,7 +21,7 @@ jobs:
       - name: Set Release Version
         run: mvn -B versions:set -DnewVersion=${{ github.ref_name }} -DgenerateBackupPoms=false
       - name: Build Release
-        run: mvn -B package -DskipTests -Dnative
+        run: mvn package -Dnative
       - name: Deploy
         env:
           registy: ${{ vars.mvn_release_repo }}
