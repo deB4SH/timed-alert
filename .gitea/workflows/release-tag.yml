@@ -21,7 +21,7 @@ jobs:
       - name: Set Release Version
         run: mvn -B versions:set -DnewVersion=${{ github.ref_name }} -DgenerateBackupPoms=false
       - name: Build Release
-        run: mvn package -Dnative
+        run: mvn package -Dnative -Dquarkus.native.remote-container-build=true
       - name: Deploy
         env:
           registy: ${{ vars.mvn_release_repo }}
