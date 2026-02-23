@@ -25,4 +25,4 @@ jobs:
       - name: Deploy
         env:
           registy: ${{ vars.mvn_release_repo }}
-        run: mvn -B deploy:deploy -DskipTests -DdistributionManagement.releaseRepoUrl=$registy
+        run: mvn -B deploy:deploy -Dnative -DskipTests -DdistributionManagement.releaseRepoUrl=$registy
