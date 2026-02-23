@@ -22,7 +22,5 @@ jobs:
         run: mvn -B versions:set -DnewVersion=${{ github.ref_name }} -DgenerateBackupPoms=false
       - name: Build Release
         run: mvn package -Dnative -Dquarkus.native.remote-container-build=true
-      - name: Deploy
-        env:
-          registy: ${{ vars.mvn_release_repo }}
-        run: mvn -B deploy:deploy -Dnative -DskipTests -DdistributionManagement.releaseRepoUrl=$registy
+      - name: Build Micro Image
+        run: docker build -f src/main/docker/Dockerfile.native-micro -t quarkus/timed-alert:${{ github.ref_name }} .
