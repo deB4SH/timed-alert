@@ -1,0 +1,19 @@
+deployment:
+  #this start the image in a sleep mode
+  sleepStart: false
+
+  replicas: ""
+  revisionHistoryLimit: ""
+  strategyType: ""
+
+  image:
+    registry: ""
+    tag: ""
+
+  resources: {}
+    # limits:
+    #   cpu: 500m
+    #   memory: 1000Mi
+    # requests:
+    #   cpu: 100m
+    #   memory: 500Mi

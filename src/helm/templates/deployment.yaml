@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{.Release.Name}}
+  labels:
+    app: timed-alert-{{.Release.Name}}
+spec:
+  replicas: {{.Values.deployment.replicas | default 1}}
+  revisionHistoryLimit: {{.Values.deployment.revisionHistoryLimit | default 1}}
+  progressDeadlineSeconds: 600
+  strategy:
+    type: {{.Values.deployment.strategyType | default "Recreate"}}
+  selector:
+    matchLabels:
+      app: timed-alert-{{.Release.Name}}
+  template:
+    metadata:
+      labels:
+        app: timed-alert-{{.Release.Name}}
+      annotations:
+        #refresh the image deployment when changes are done on the configmap
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+    spec:
+      containers:
+        - name: alerter
+          image: {{ .Values.deployment.image.registry }}:{{ .Values.deployment.image.tag | default .Chart.AppVersion  }}
+          imagePullPolicy: IfNotPresent
+          {{ if .Values.deployment.sleepStart }}
+          # Just spin & wait forever
+          command: [ "/bin/bash", "-c", "--" ]
+          args: [ "while true; do sleep 30; done;" ]
+          {{ end }}
+          envFrom:
+            - configMapRef:
+                name: {{.Release.Name}}-configuration
+          resources:
+            {{- toYaml .Values.deployment.resources | nindent 12 }}
+          ports:
+            - containerPort: 8008
+              name: http
+        
