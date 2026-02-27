@@ -3,6 +3,6 @@ name:
 description: This Chart deploys the timed-alert software to test your monitoring and alerting stack.
 version: 0.0.0
 appVersion: 0.0.0
-icon: https://github.com/deB4SH/timed-alert/blob/main/.misc/logo.png?raw=true
+icon: https://codeberg.org/deB4SH/timed-alert/raw/branch/main/.misc/logo.png
 maintainers:
   - name: deB4SH
