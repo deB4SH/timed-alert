@@ -1,12 +1,14 @@
 name: Build Helm Source
 
-on:
-  push:
-    branches:
-      - main
-      - dev
+#on:
+#  push:
+#    branches:
+#      - main
+#      - dev
     #paths:
     #  - 'src/helm/**'
+
+# Matrix based pipeline not working in gitea for now: https://github.com/go-gitea/gitea/issues/25179
 
 jobs:
   setupmatrix:
