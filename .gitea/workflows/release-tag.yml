@@ -30,7 +30,7 @@ jobs:
           password: ${{ secrets.DR_ABELL_PASSWORD }}
       - name: Docker meta
         id: meta_build
-        uses: docker/metadata-action@v4
+        uses: docker/metadata-action@030e881283bb7a6894de51c315a6bfe6a94e05cf
         with:
           images: |
             abell.registry.macslabs.de/java/timed-alert
