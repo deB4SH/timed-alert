@@ -1,5 +1,5 @@
 apiVersion: v2
-name: 
+name: timed-alert
 description: This Chart deploys the timed-alert software to test your monitoring and alerting stack.
 version: 0.0.0
 appVersion: 0.0.0

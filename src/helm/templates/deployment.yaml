@@ -12,11 +12,11 @@ spec:
     type: {{.Values.deployment.strategyType | default "Recreate"}}
   selector:
     matchLabels:
-      app: timed-alert-{{.Release.Name}}
+      app: {{.Release.Name}}
   template:
     metadata:
       labels:
-        app: timed-alert-{{.Release.Name}}
+        app: {{.Release.Name}}
       annotations:
         #refresh the image deployment when changes are done on the configmap
         checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
@@ -25,17 +25,28 @@ spec:
         - name: alerter
           image: {{ .Values.deployment.image.registry }}:{{ .Values.deployment.image.tag | default .Chart.AppVersion  }}
           imagePullPolicy: IfNotPresent
-          {{ if .Values.deployment.sleepStart }}
+          {{- if .Values.deployment.sleepStart }}
           # Just spin & wait forever
           command: [ "/bin/bash", "-c", "--" ]
           args: [ "while true; do sleep 30; done;" ]
-          {{ end }}
+          {{- end }}
           envFrom:
             - configMapRef:
                 name: {{.Release.Name}}-configuration
+          {{- if .Values.deployment.resources}}
           resources:
             {{- toYaml .Values.deployment.resources | nindent 12 }}
+          {{- end }}
           ports:
-            - containerPort: 8008
+            - containerPort: 8080
               name: http
-        
+          {{- if .Values.deployment.tolerations }}
+          tolerations: {{. .Values.deployment.tolerations | toYaml}}
+          {{- end }}
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: {{.Values.deployment.livenessProbe.initialDelaySeconds}}
+            periodSeconds: {{.Values.deployment.livenessProbe.periodSeconds}}
+

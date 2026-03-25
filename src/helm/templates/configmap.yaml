@@ -5,3 +5,8 @@ metadata:
 data:
   UID: "1000"
   GID: "1000"
+  startHour: "{{.Values.deployment.configuration.startHour}}"
+  startMinute: "{{.Values.deployment.configuration.startMinute}}"
+  endHour: "{{.Values.deployment.configuration.endHour}}"
+  endMinute: "{{.Values.deployment.configuration.endMinute}}"
+  dayOfAlert: "{{.Values.deployment.configuration.dayOfAlert}}"
