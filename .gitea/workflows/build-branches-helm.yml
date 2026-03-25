@@ -9,7 +9,7 @@ on:
     #  - 'src/helm/**'
 
 jobs:
-  setup-matrix:
+  setupmatrix:
     runs-on: ubuntu-latest
     container:
       image: ${{ vars.helm_image }}
@@ -27,12 +27,12 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
-    needs: setup-matrix
+    needs: setupmatrix
     container:
       image: ${{ vars.helm_image }}
     strategy:
       matrix:
-        folder: ${{ fromJson(needs.setup-matrix.outputs.matrix) }}
+        folder: ${{ fromJson(needs.setupmatrix.outputs.MATRIX) }}
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd      
       - name: Step One for ${{ matrix.folder }}
