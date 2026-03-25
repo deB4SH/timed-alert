@@ -46,8 +46,6 @@ jobs:
 
   run-helm-tests:
     name: Test folder - ${{ matrix.folder }}
-    container:
-      image: ${{ vars.helm_image }}
     needs: setup-matrix
     runs-on: ubuntu-latest
     strategy:
