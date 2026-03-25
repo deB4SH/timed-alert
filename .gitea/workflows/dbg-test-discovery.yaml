@@ -7,22 +7,41 @@ on:
 jobs:
   setup-matrix:
     name: Generate Matrix
-    container:
-      image: ${{ vars.helm_image }}
     runs-on: ubuntu-latest
     outputs:
       folders: ${{ steps.find-folders.outputs.matrix }}
     steps:
       - name: Checkout code
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
-
       - name: Find directories and format JSON
         id: find-folders
         run: |
-          DIRS=$(find ./src/test/helm/* -maxdepth 0 -type d -exec basename {} \;)
-          JSON_ARRAY=$(echo "$DIRS" | jq -R -s -c 'split("\n") | del(.[] | select(. == ""))')
+          # Initialize an empty array string
+          JSON_ARRAY="["
+          FIRST=true
+
+          # Loop through directories in the specified path
+          for dir in ./src/test/helm/*/; do
+            # Check if the directory actually exists (handles empty glob)
+            [ -d "$dir" ] || continue
+            
+            # Extract just the folder name (remove trailing slash and path)
+            folder=$(basename "$dir")
+            
+            # Add a comma if this isn't the first item
+            if [ "$FIRST" = true ]; then
+              FIRST=false
+            else
+              JSON_ARRAY+=", "
+            fi
+            
+            # Append the quoted folder name
+            JSON_ARRAY+="\"$folder\""
+          done
+
+          JSON_ARRAY+="]"
           
-          echo "Discovered folders: $JSON_ARRAY"
+          echo "Generated JSON: $JSON_ARRAY"
           echo "matrix=$JSON_ARRAY" >> $GITHUB_OUTPUT
 
   run-helm-tests:
