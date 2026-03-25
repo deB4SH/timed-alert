@@ -1,0 +1,41 @@
+---
+# Source: timed-alert/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: timed-alert
+  labels:
+    app: timed-alert-timed-alert
+spec:
+  replicas: 1
+  revisionHistoryLimit: 1
+  progressDeadlineSeconds: 600
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: timed-alert
+  template:
+    metadata:
+      labels:
+        app: timed-alert
+      annotations:
+        #refresh the image deployment when changes are done on the configmap
+        checksum/config: 872533a7b6d83d37438b7d82a5b6c47b68d32b9af8e19548d24427071306993d
+    spec:
+      containers:
+        - name: alerter
+          image: ghcr.io/deb4sh/timed-alert:0.0.0
+          imagePullPolicy: IfNotPresent
+          envFrom:
+            - configMapRef:
+                name: timed-alert-configuration
+          ports:
+            - containerPort: 8080
+              name: http
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 60
+            periodSeconds: 120
