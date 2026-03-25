@@ -1,0 +1,14 @@
+---
+# Source: timed-alert/templates/configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: timed-alert-configuration
+data:
+  UID: "1000"
+  GID: "1000"
+  startHour: "09"
+  startMinute: "00"
+  endHour: "10"
+  endMinute: "00"
+  dayOfAlert: "MONDAY"
