@@ -53,3 +53,25 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta_build.outputs.tags }}
           labels: ${{ steps.meta_build.outputs.labels }}
+      - name: Replace Version in Helm Chart  
+        run: |
+          sed -E -i "s/version: .*/version: ${{ github.ref_name }}/" ./src/helm/Chart.yaml
+          cat Chart.yaml
+      - name: Package Helm Chart
+        id: package_and_sign
+        run: |
+          mkdir dist
+          helm package --dependency-update ./src/helm --destination dist
+      - name: Push to registry
+        id: push
+        run: |
+          for file in "./dist"/*; do
+            if [ -f "$file" ]; then
+              echo "uploading: $file"
+              curl -u $USER:$PASS $REGISTRY --upload-file $file
+            fi
+          done
+        env:
+          USER: "${{ secrets.HELM_REGISTRY_USER }}"
+          PASS: "${{ secrets.HELM_REGISTRY_PASSWORD }}"
+          REGISTRY: "${{ secrets.HELM_REGISTRY }}"
