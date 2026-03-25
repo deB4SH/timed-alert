@@ -1,0 +1,42 @@
+name: Build Java Source
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+    paths:
+      - 'src/helm/**'
+
+jobs:
+  setup-matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+      - id: set-matrix
+        run: |
+          DIRS=$(find ./src/test/helm/* -maxdepth 0 -type d -exec basename {} \;)
+          JSON=$(echo "$DIRS" | jq -R -s -c 'split("\n") | del(.[] | select(. == ""))')
+          echo "matrix=$JSON" >> $GITHUB_OUTPUT
+
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: ${{ vars.helm_image }}
+    strategy:
+      matrix:
+        folder: ${{ fromJson(needs.setup-matrix.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd      
+      - name: Step One for ${{ matrix.folder }}
+        run: echo "Running first task for ./src/test/helm/${{ matrix.folder }}"
+
+
+      #- name: Render Chart
+      #  run: |
+      #    helm template --debug --release-name paperless-ngx -f ./.test/values.yaml  --output-dir ./.test/result ./
+      #- name: Diff Folders
+      #  run: |
+      #    diff -rq ./.test/expected/paperless-ngx ./.test/result/paperless-ngx
