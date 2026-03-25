@@ -5,10 +5,9 @@ on:
     branches:
       - main
       - dev
-    #paths:
-    #  - 'src/helm/**'
+    paths:
+      - 'src/helm/**'
 
-# Matrix based pipeline not working in gitea for now: https://github.com/go-gitea/gitea/issues/25179
 
 jobs:
   test:
