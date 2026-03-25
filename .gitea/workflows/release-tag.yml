@@ -45,7 +45,7 @@ jobs:
             type=schedule
             type=ref,event=tag
       - name: Build and push
-        uses: docker/build-push-action@b45d80f862d83dbcd57f89517bcf500b2ab88fb2
+        uses: docker/build-push-action@d08e5c354a6adb9ed34480a06d141179aa583294
         with:
           context: ./
           file: ./src/main/docker/Dockerfile.native-micro
