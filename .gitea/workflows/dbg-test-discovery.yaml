@@ -1,7 +1,8 @@
 name: Dynamic Helm Test Matrix
 
 on:
-  workflow_dispatch: # Allows you to run this manually from the Actions tab
+  push:
+  workflow_dispatch:
 
 jobs:
   setup-matrix:
