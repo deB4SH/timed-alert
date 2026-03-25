@@ -1,10 +1,12 @@
-name: Build Branch
+name: Build Java Source
 
 on:
   push:
     branches:
       - main
       - dev
+    paths:
+      - 'src/main/**'
 
 jobs:
   build:
