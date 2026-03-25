@@ -30,8 +30,6 @@ jobs:
     container:
       image: ${{ vars.helm_image }}
     needs: setup-matrix
-    container:
-      image: ${{ vars.helm_image }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
