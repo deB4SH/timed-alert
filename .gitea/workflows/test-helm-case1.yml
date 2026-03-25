@@ -1,0 +1,26 @@
+name: Test Helm Case 1
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+    #paths:
+    #  - 'src/helm/**'
+
+# Matrix based pipeline not working in gitea for now: https://github.com/go-gitea/gitea/issues/25179
+
+jobs:
+  test:
+    needs: setupmatrix
+    runs-on: ubuntu-latest
+    container:
+      image: ${{ vars.helm_image }}
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd      
+      - name: Render Chart
+        run: |
+          helm template --debug --release-name timed-alert -f ./src/test/helm/test_case_1/values.yaml  --output-dir ./src/test/helm/test_case_1/out ./src/helm
+      - name: Diff Folders
+        run: |
+          diff -rq ./src/test/helm/test_case_1/expected/timed-alert ./src/test/helm/test_case_1/out/timed-alert
