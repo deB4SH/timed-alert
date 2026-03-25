@@ -22,7 +22,8 @@ jobs:
         run: |
           DIRS=$(find ./src/test/helm/* -maxdepth 0 -type d -exec basename {} \;)
           JSON=$(echo "$DIRS" | jq -R -s -c 'split("\n") | del(.[] | select(. == ""))')
-          echo "matrix=$JSON" >> $GITHUB_OUTPUT
+          echo "MATRIX=$JSON"
+          echo "MATRIX=$JSON" >> $GITHUB_OUTPUT
 
   build:
     runs-on: ubuntu-latest
