@@ -1,4 +1,4 @@
-name: Build Java Source
+name: Build Helm Source
 
 on:
   push:
@@ -26,6 +26,7 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
+    needs: setup-matrix
     container:
       image: ${{ vars.helm_image }}
     strategy:
