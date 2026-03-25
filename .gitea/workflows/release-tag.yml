@@ -22,5 +22,18 @@ jobs:
         run: mvn -B versions:set -DnewVersion=${{ github.ref_name }} -DgenerateBackupPoms=false
       - name: Build Release
         run: mvn package -Dnative -Dquarkus.native.remote-container-build=true
-      - name: Build Micro Image
-        run: docker build -f src/main/docker/Dockerfile.native-micro -t quarkus/timed-alert:${{ github.ref_name }} .
+      - name: Login to Docker Registry
+        uses: docker/login-action@b45d80f862d83dbcd57f89517bcf500b2ab88fb2
+        with:
+          registry: abell.registry.macslabs.de
+          username: ${{ secrets.DR_ABELL_USER }}
+          password: ${{ secrets.DR_ABELL_PASSWORD }}
+      - name: Build and push
+        uses: docker/build-push-action@b45d80f862d83dbcd57f89517bcf500b2ab88fb2
+        with:
+          context: ./
+          file: ./src/main/docker/Dockerfile.native-micro
+          platforms: linux/amd64
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.meta_build.outputs.tags }}
+          labels: ${{ steps.meta_build.outputs.labels }}
