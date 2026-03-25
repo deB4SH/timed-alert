@@ -28,6 +28,22 @@ jobs:
           registry: abell.registry.macslabs.de
           username: ${{ secrets.DR_ABELL_USER }}
           password: ${{ secrets.DR_ABELL_PASSWORD }}
+      - name: Docker meta
+        id: meta_build
+        uses: docker/metadata-action@v4
+        with:
+          images: |
+            abell.registry.macslabs.de/java/timed-alert
+          labels: |
+            org.opencontainers.image.title="Timed Alert"
+            org.opencontainers.image.description="Alert Testing Tool for your selfhosted environmetn"
+            org.opencontainers.image.vendor="https://github.com/${{ github.repository_owner }}"
+            org.label-schema.url="https://github.com/${{ github.repository_owner }}/timed-alert"
+            org.label-schema.usage="https://github.com/${{ github.repository_owner }}/timed-alert/blob/main/README.md"
+            org.label-schema.schema-version="1.0"
+          tags: |
+            type=schedule
+            type=ref,event=tag
       - name: Build and push
         uses: docker/build-push-action@b45d80f862d83dbcd57f89517bcf500b2ab88fb2
         with:
