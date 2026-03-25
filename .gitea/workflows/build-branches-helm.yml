@@ -5,8 +5,8 @@ on:
     branches:
       - main
       - dev
-    paths:
-      - 'src/helm/**'
+    #paths:
+    #  - 'src/helm/**'
 
 jobs:
   setup-matrix:
