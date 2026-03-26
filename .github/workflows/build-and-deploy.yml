@@ -20,6 +20,7 @@ jobs:
           java-version: 25
           server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
           settings-path: ${{ github.workspace }} # location for the settings.xml file
+          distribution: corretto
       - uses: azure/setup-helm@fe7b79cd5ee1e45176fcad797de68ecaf3ca4814
         id: installHelm
         with:
