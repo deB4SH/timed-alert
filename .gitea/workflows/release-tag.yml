@@ -56,7 +56,7 @@ jobs:
       - name: Replace Version in Helm Chart  
         run: |
           sed -i "s/version: .*/version: ${{ github.ref_name }}/" src/helm/Chart.yaml
-          cat Chart.yaml
+          cat src/helm/Chart.yaml
       - name: Package Helm Chart
         id: package_and_sign
         run: |
