@@ -8,7 +8,8 @@ deployment:
 
   image:
     registry: "ghcr.io/deb4sh/timed-alert"
-    tag: "0.0.0"
+    #defaults to Chart.Version
+    tag: ""
 
   resources: {}
     # limits:
