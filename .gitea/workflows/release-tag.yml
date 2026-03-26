@@ -12,47 +12,47 @@ jobs:
       image: ${{ vars.mvn_helm_image }}
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
-      # - name: Copy m2 settings
-      #   env:
-      #     MTWOS: ${{ vars.M2_SETTINGS_PULL_PROXY }}
-      #   run: |
-      #     mkdir -p ~/.m2
-      #     printf "$MTWOS" > ~/.m2/settings.xml
-      # - name: Set Release Version
-      #   run: mvn -B versions:set -DnewVersion=${{ github.ref_name }} -DgenerateBackupPoms=false
-      # - name: Build Release
-      #   run: mvn package -Dnative -Dquarkus.native.remote-container-build=true
-      # - name: Login to Docker Registry
-      #   uses: docker/login-action@b45d80f862d83dbcd57f89517bcf500b2ab88fb2
-      #   with:
-      #     registry: abell.registry.macslabs.de
-      #     username: ${{ secrets.DR_ABELL_USER }}
-      #     password: ${{ secrets.DR_ABELL_PASSWORD }}
-      # - name: Docker meta
-      #   id: meta_build
-      #   uses: docker/metadata-action@818d4b7b91585d195f67373fd9cb0332e31a7175
-      #   with:
-      #     images: |
-      #       abell.registry.macslabs.de/java/timed-alert
-      #     labels: |
-      #       org.opencontainers.image.title="Timed Alert"
-      #       org.opencontainers.image.description="Alert Testing Tool for your selfhosted environmetn"
-      #       org.opencontainers.image.vendor="https://github.com/${{ github.repository_owner }}"
-      #       org.label-schema.url="https://github.com/${{ github.repository_owner }}/timed-alert"
-      #       org.label-schema.usage="https://github.com/${{ github.repository_owner }}/timed-alert/blob/main/README.md"
-      #       org.label-schema.schema-version="1.0"
-      #     tags: |
-      #       type=schedule
-      #       type=ref,event=tag
-      # - name: Build and push
-      #   uses: docker/build-push-action@d08e5c354a6adb9ed34480a06d141179aa583294
-      #   with:
-      #     context: ./
-      #     file: ./src/main/docker/Dockerfile.native-micro
-      #     platforms: linux/amd64
-      #     push: ${{ github.event_name != 'pull_request' }}
-      #     tags: ${{ steps.meta_build.outputs.tags }}
-      #     labels: ${{ steps.meta_build.outputs.labels }}
+      - name: Copy m2 settings
+        env:
+          MTWOS: ${{ vars.M2_SETTINGS_PULL_PROXY }}
+        run: |
+          mkdir -p ~/.m2
+          printf "$MTWOS" > ~/.m2/settings.xml
+      - name: Set Release Version
+        run: mvn -B versions:set -DnewVersion=${{ github.ref_name }} -DgenerateBackupPoms=false
+      - name: Build Release
+        run: mvn package -Dnative -Dquarkus.native.remote-container-build=true
+      - name: Login to Docker Registry
+        uses: docker/login-action@b45d80f862d83dbcd57f89517bcf500b2ab88fb2
+        with:
+          registry: abell.registry.macslabs.de
+          username: ${{ secrets.DR_ABELL_USER }}
+          password: ${{ secrets.DR_ABELL_PASSWORD }}
+      - name: Docker meta
+        id: meta_build
+        uses: docker/metadata-action@818d4b7b91585d195f67373fd9cb0332e31a7175
+        with:
+          images: |
+            abell.registry.macslabs.de/java/timed-alert
+          labels: |
+            org.opencontainers.image.title="Timed Alert"
+            org.opencontainers.image.description="Alert Testing Tool for your selfhosted environmetn"
+            org.opencontainers.image.vendor="https://github.com/${{ github.repository_owner }}"
+            org.label-schema.url="https://github.com/${{ github.repository_owner }}/timed-alert"
+            org.label-schema.usage="https://github.com/${{ github.repository_owner }}/timed-alert/blob/main/README.md"
+            org.label-schema.schema-version="1.0"
+          tags: |
+            type=schedule
+            type=ref,event=tag
+      - name: Build and push
+        uses: docker/build-push-action@d08e5c354a6adb9ed34480a06d141179aa583294
+        with:
+          context: ./
+          file: ./src/main/docker/Dockerfile.native-micro
+          platforms: linux/amd64
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.meta_build.outputs.tags }}
+          labels: ${{ steps.meta_build.outputs.labels }}
       - name: Replace Version in Helm Chart  
         run: |
           sed -i "s/version: .*/version: ${{ github.ref_name }}/" src/helm/Chart.yaml
