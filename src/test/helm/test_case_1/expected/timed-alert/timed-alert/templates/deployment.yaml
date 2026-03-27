@@ -30,6 +30,13 @@ spec:
           envFrom:
             - configMapRef:
                 name: timed-alert-configuration
+          resources:
+            limits:
+              cpu: 500m
+              memory: 1000Mi
+            requests:
+              cpu: 100m
+              memory: 500Mi
           ports:
             - containerPort: 8080
               name: http

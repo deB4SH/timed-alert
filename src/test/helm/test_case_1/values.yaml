@@ -10,13 +10,13 @@ deployment:
     registry: "ghcr.io/deb4sh/timed-alert"
     tag: "0.0.0"
 
-  resources: {}
-    # limits:
-    #   cpu: 500m
-    #   memory: 1000Mi
-    # requests:
-    #   cpu: 100m
-    #   memory: 500Mi
+  resources:
+    limits:
+      cpu: 500m
+      memory: 1000Mi
+    requests:
+      cpu: 100m
+      memory: 500Mi
 
   tolerations: { }
   #- key: "key-name"          # Required (must match a taint key)

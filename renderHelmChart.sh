@@ -4,7 +4,7 @@ do
     dir=${dir%*/}     
     echo "Templating next: ${dir##*/}"
     rm -rf ./src/test/helm/${dir##*/}/out
-    helm template --debug --release-name timed-alert --output-dir ./src/test/helm/${dir##*/}/out ./src/helm    
+    helm template --debug --release-name timed-alert --values ./src/test/helm/${dir##*/}/values.yaml  --output-dir ./src/test/helm/${dir##*/}/out ./src/helm    
 done
 
 
