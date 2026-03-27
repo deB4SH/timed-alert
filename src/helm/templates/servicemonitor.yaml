@@ -1,0 +1,15 @@
+---
+{{- if .Values.servicemonitor.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: timed-alert-{{.Release.Name}}
+  labels:
+    app: {{.Release.Name}}
+spec:
+  selector:
+    matchLabels:
+      app: {{.Release.Name}}
+  endpoints:
+  - port: http
+{{- end }}
