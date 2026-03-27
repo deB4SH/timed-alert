@@ -36,3 +36,6 @@ deployment:
     endMinute: "00"
     #possible values: MONDAY TUESDAY WEDNESDAY THURSDAY FRIDAY SATURDAY SUNDAY
     dayOfAlert: "MONDAY"
+
+servicemonitor:
+  enabled: true

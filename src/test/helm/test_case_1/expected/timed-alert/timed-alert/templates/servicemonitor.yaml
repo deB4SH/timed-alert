@@ -1,0 +1,14 @@
+---
+# Source: timed-alert/templates/servicemonitor.yaml
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: timed-alert-timed-alert
+  labels:
+    app: timed-alert
+spec:
+  selector:
+    matchLabels:
+      app: timed-alert
+  endpoints:
+  - port: http
