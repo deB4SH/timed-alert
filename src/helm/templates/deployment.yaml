@@ -43,6 +43,16 @@ spec:
           {{- if .Values.deployment.tolerations }}
           tolerations: {{. .Values.deployment.tolerations | toYaml}}
           {{- end }}
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsNonRoot: true
+            runAsUser: 1000
+            runAsGroup: 1000
+            seccompProfile:
+              type: RuntimeDefault
+            capabilities:
+              drop:
+                - ALL
           livenessProbe:
             httpGet:
               path: /health
