@@ -7,7 +7,7 @@ on:
       - dev
     paths:
       - 'src/helm/**'
-
+      - 'src/test/helm/**'
 
 jobs:
   test:
