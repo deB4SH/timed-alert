@@ -21,7 +21,7 @@ spec:
         app: timed-alert
       annotations:
         #refresh the image deployment when changes are done on the configmap
-        checksum/config: 872533a7b6d83d37438b7d82a5b6c47b68d32b9af8e19548d24427071306993d
+        checksum/config: 2c549979f4ea93120ef4c99b832db11521b89829e7aef43e73d5b212265c408b
     spec:
       containers:
         - name: alerter

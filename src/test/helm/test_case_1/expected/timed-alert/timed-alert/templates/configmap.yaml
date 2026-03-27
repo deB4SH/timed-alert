@@ -4,6 +4,8 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: timed-alert-configuration
+  labels:
+    app: timed-alert
 data:
   UID: "1000"
   GID: "1000"
