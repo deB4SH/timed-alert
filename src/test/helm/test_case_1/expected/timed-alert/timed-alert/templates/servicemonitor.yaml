@@ -12,3 +12,5 @@ spec:
       app: timed-alert
   endpoints:
   - port: http
+    interval: 15s
+    scrapeTimeout: 5s
