@@ -14,3 +14,4 @@ spec:
   - port: http
     interval: 15s
     scrapeTimeout: 5s
+    path: /q/metrics
