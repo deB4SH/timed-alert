@@ -9,10 +9,10 @@
             <option name="delegateBuildToMaven" value="false" />
             <option name="environmentProperties">
               <map>
-                <entry key="dayOfAlert" value="WEDNESDAY" />
-                <entry key="endHour" value="10" />
+                <entry key="dayOfAlert" value="MONDAY" />
+                <entry key="endHour" value="11" />
                 <entry key="endMinute" value="00" />
-                <entry key="startHour" value="09" />
+                <entry key="startHour" value="10" />
                 <entry key="startMinute" value="00" />
               </map>
             </option>
