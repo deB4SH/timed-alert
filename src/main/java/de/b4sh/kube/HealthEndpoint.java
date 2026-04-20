@@ -1,18 +1,15 @@
 package de.b4sh.kube;
 
-import com.aayushatharva.brotli4j.common.annotations.Local;
-import io.micrometer.core.instrument.MeterRegistry;
-import io.micrometer.core.instrument.Tags;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 
 import java.time.*;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Simple Health endpoint that also switches a specific metrics that shall trigger
@@ -21,6 +18,7 @@ import java.util.Map;
 @Path("/health")
 @Produces("text/plain")
 public class HealthEndpoint {
+    private final Logger log = Logger.getLogger(HealthEndpoint.class.getName());
     final Map<String, String> env = System.getenv();
     final LocalTime alertStart = LocalTime.of(Integer.parseInt(env.get("startHour")),Integer.parseInt(env.get("startMinute")));
     final LocalTime alertEnd = LocalTime.of(Integer.parseInt(env.get("endHour")),Integer.parseInt(env.get("endMinute")));
@@ -41,12 +39,15 @@ public class HealthEndpoint {
         } else {
             metricStorage.setAlertCode(0);
         }
-        return String.format("Service is alive. Current Configuration: error code: %s, startHour: %s, startMinute: %s, endHour: %s, endMinute: %s, dayOfWeek: %s",
+        final String response = String.format("Service is alive. Current Configuration: error code: %s, startHour: %s, startMinute: %s, endHour: %s, endMinute: %s, dayOfWeek: %s. Now is: %s",
                 metricStorage.getAlertCode(),
                 Integer.parseInt(env.get("startHour")),
                 Integer.parseInt(env.get("startMinute")),
                 Integer.parseInt(env.get("endHour")),
                 Integer.parseInt(env.get("endMinute")),
-                dayToCheck.toString());
+                dayToCheck.toString(),
+                LocalTime.now().toString());
+        log.log(Level.INFO, response);
+        return response;
     }
 }
